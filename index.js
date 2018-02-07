@@ -1,5 +1,15 @@
 'use strict';
+const fs = require('fs');
 const nodemailer = require('nodemailer');
+const template = fs.readFileSync('./projects/kilogram_alpha/build/index.html',{encoding:'utf-8'});
+
+const getReceiversString = (list = 'seminioni@gmail.com') => {
+    return list.join(',');
+}
+
+const getUniqueNumber = (min, max) => {
+    return Math.round(Math.random() * (max - min) + min);
+}
 
 // Generate test SMTP service account from ethereal.email
 // Only needed if you don't have a real mail account for testing
@@ -18,11 +28,10 @@ nodemailer.createTestAccount((err, account) => {
 
     // setup email data with unicode symbols
     let mailOptions = {
-        from: '"Fred Foo 👻" <amazonseller5@mail.ru>', // sender address
-        to: 'seminioni@gmail.com', // list of receivers
-        subject: 'Hello ✔', // Subject line
-        text: 'Hello world?', // plain text body
-        html: '<b>Hello world?</b>' // html body
+        from: '"Mike Syomin 👻" <amazonseller5@mail.ru>', // // paste here sender name e.g Mike Syomin
+        to: getReceiversString(receiversList), // list of receivers 
+        subject: `Тестовое письмо по рассылке ${getUniqueNumber(0, 10000)}`, // Subject line
+        html:  template// html body
     };
 
     // send mail with defined transport object
